@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAS AR-RIDHO Lesong Daya</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-display { font-family: 'Playfair Display', serif; }
+    html, body { height: 100%; margin: 0; }
+    
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
+      50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.6); }
+    }
+    @keyframes gradient-shift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+    .animate-float { animation: float 3s ease-in-out infinite; }
+    .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+    .gradient-animate {
+      background: linear-gradient(-45deg, #1e3a8a, #6366f1, #7c3aed, #1e3a8a);
+      background-size: 400% 400%;
+      animation: gradient-shift 8s ease infinite;
+    }
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
+    .delay-400 { animation-delay: 0.4s; }
+    
+    .card-hover {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .card-hover:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.25);
+    }
+    
+    .nav-link {
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #6366f1, #7c3aed);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+    
+    .hero-pattern {
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    
+    .scroll-smooth { scroll-behavior: smooth; }
+    
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .text-gradient {
+      background: linear-gradient(135deg, #6366f1, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .slide { display: none; }
+    .slide.active { display: block; }
+    
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #6366f1, #7c3aed); border-radius: 4px; }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-slate-50 scroll-smooth overflow-auto">
+  <div id="app" class="w-full min-h-full"><!-- Navigation -->
+   <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-transparent">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="flex items-center justify-between h-20">
+      <div class="flex items-center gap-3">
+       <div class="w-12 h-12 rounded-full shadow-lg overflow-hidden bg-white"><img src="https://raw.githubusercontent.com/maarridhomedia-design/Foto-kepala-/refs/heads/main/IMG_20260215_184211-removebg-preview.png" alt="Logo MAS AR-RIDHO" class="w-full h-full object-cover" loading="lazy" onerror="console.error('Logo failed to load:', this.src); this.style.background='linear-gradient(135deg, #1e3a8a, #7c3aed)';">
+       </div>
+       <div>
+        <h1 id="nav-title" class="text-white font-bold text-lg leading-tight">MAS AR-RIDHO</h1>
+        <p class="text-white/70 text-xs">Lesong Daya</p>
+       </div>
+      </div>
+      <div class="hidden lg:flex items-center gap-8"><a href="#beranda" class="nav-link text-white/90 hover:text-white text-sm font-medium">Beranda</a> <a href="#tentang" class="nav-link text-white/90 hover:text-white text-sm font-medium">Tentang</a> <a href="#sambutan" class="nav-link text-white/90 hover:text-white text-sm font-medium">Sambutan</a> <a href="#fasilitas" class="nav-link text-white/90 hover:text-white text-sm font-medium">Fasilitas</a> <a href="#prestasi" class="nav-link text-white/90 hover:text-white text-sm font-medium">Prestasi</a> <a href="#kontak" class="nav-link text-white/90 hover:text-white text-sm font-medium">Kontak</a> <a href="#kontak" class="px-5 py-2.5 bg-white text-blue-700 rounded-full font-semibold text-sm hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl"> Daftar Sekarang </a>
+      </div><button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg glass" onclick="toggleMobileMenu()">
+       <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+       </svg></button>
+     </div>
+    </div>
+    <div id="mobile-menu" class="lg:hidden hidden bg-white/95 backdrop-blur-lg shadow-xl">
+     <div class="px-4 py-6 space-y-4"><a href="#beranda" class="block text-slate-700 hover:text-blue-600 font-medium py-2" onclick="toggleMobileMenu()">Beranda</a> <a href="#tentang" class="block text-slate-700 hover:text-blue-600 font-medium py-2" onclick="toggleMobileMenu()">Tentang</a> <a href="#sambutan" class="block text-slate-700 hover:text-blue-600 font-medium py-2" onclick="toggleMobileMenu()">Sambutan</a> <a href="#fasilitas" class="block text-slate-700 hover:text-blue-600 font-medium py-2" onclick="toggleMobileMenu()">Fasilitas</a> <a href="#prestasi" class="block text-slate-700 hover:text-blue-600 font-medium py-2" onclick="toggleMobileMenu()">Prestasi</a> <a href="#kontak" class="block text-slate-700 hover:text-blue-600 font-medium py-2" onclick="toggleMobileMenu()">Kontak</a> <a href="#kontak" class="block w-full text-center px-5 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full font-semibold" onclick="toggleMobileMenu()"> Daftar Sekarang </a>
+     </div>
+    </div>
+   </nav><!-- Hero Section -->
+   <section id="beranda" class="relative min-h-screen hero-pattern flex items-center overflow-hidden pt-20">
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-900/70 via-purple-900/70 to-blue-900/70"></div>
+    <div class="absolute inset-0 -z-10"><img src="https://raw.githubusercontent.com/maarridhomedia-design/Foto-kepala-/refs/heads/main/IMG-20260128-WA0015.jpg" alt="Gedung Sekolah" class="w-full h-full object-cover" loading="lazy" onerror="console.error('Image failed to load:', this.src);">
+    </div>
+    <div class="absolute top-20 left-10 w-20 h-20 border border-white/20 rounded-full animate-float"></div>
+    <div class="absolute bottom-32 right-20 w-32 h-32 border border-white/10 rounded-full animate-float delay-200"></div>
+    <div class="absolute top-40 right-40 w-4 h-4 bg-yellow-400 rounded-full animate-pulse"></div>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 w-full">
+     <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div class="text-center lg:text-left">
+       <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-white/90 text-sm mb-6 animate-fade-in-up"><span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> Pendaftaran Siswa Baru Dibuka
+       </div>
+       <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6 animate-fade-in-up delay-100"><span id="hero-title">MAS AR-RIDHO</span> <br><span class="text-yellow-300">Lesong Daya</span></h1>
+       <p id="hero-slogan" class="text-xl sm:text-2xl text-white/90 font-light mb-8 animate-fade-in-up delay-200">"Unggul dalam Prestasi, Berkarakter dalam Budaya"</p>
+       <p class="text-white/70 text-lg mb-10 max-w-xl animate-fade-in-up delay-300">Membangun generasi unggul yang berilmu, beriman, dan berakhlak mulia untuk masa depan Indonesia yang lebih cerah.</p>
+       <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-in-up delay-400"><a href="#kontak" class="px-8 py-4 bg-white text-blue-700 rounded-full font-bold text-lg hover:bg-yellow-300 hover:text-blue-800 transition-all shadow-2xl hover:shadow-yellow-500/30 animate-pulse-glow"> 📝 Daftar Sekarang </a> <a href="#prestasi" class="px-8 py-4 border-2 border-white text-white rounded-full font-bold text-lg hover:bg-white hover:text-blue-700 transition-all"> 🏆 Lihat Prestasi </a>
+       </div>
+      </div>
+     </div>
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
+      <div class="glass rounded-2xl p-6 text-center animate-fade-in-up">
+       <p class="text-4xl font-bold text-white mb-2">500+</p>
+       <p class="text-white/70 text-sm">Siswa Aktif</p>
+      </div>
+      <div class="glass rounded-2xl p-6 text-center animate-fade-in-up delay-100">
+       <p class="text-4xl font-bold text-white mb-2">35+</p>
+       <p class="text-white/70 text-sm">Guru Profesional</p>
+      </div>
+      <div class="glass rounded-2xl p-6 text-center animate-fade-in-up delay-200">
+       <p class="text-4xl font-bold text-white mb-2">50+</p>
+       <p class="text-white/70 text-sm">Prestasi Diraih</p>
+      </div>
+      <div class="glass rounded-2xl p-6 text-center animate-fade-in-up delay-300">
+       <p class="text-4xl font-bold text-white mb-2">15+</p>
+       <p class="text-white/70 text-sm">Tahun Berdiri</p>
+      </div>
+     </div>
+    </div>
+    <div class="absolute bottom-24 left-1/2 transform -translate-x-1/2 animate-bounce"><a href="#tentang" class="text-white/70 hover:text-white">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+      </svg></a>
+    </div>
+   </section><!-- About Section -->
+   <section id="tentang" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-16"><span class="inline-block px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-4">Tentang Kami</span>
+      <h2 class="font-display text-4xl lg:text-5xl font-bold text-slate-800 mb-4">Mengenal <span class="text-gradient">MAS AR-RIDHO</span></h2>
+      <p class="text-slate-600 text-lg max-w-2xl mx-auto">Lembaga pendidikan Islam yang berkomitmen mencetak generasi unggul</p>
+     </div>
+     <div class="grid lg:grid-cols-2 gap-16 items-start">
+      <div class="space-y-8">
+       <div class="relative">
+        <div class="absolute -inset-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl opacity-20 blur-2xl"></div>
+        <div class="relative rounded-3xl overflow-hidden shadow-2xl"><img src="https://raw.githubusercontent.com/maarridhomedia-design/Foto-kepala-/refs/heads/main/IMG_20260215_192803.jpg" alt="Gedung MAS AR-RIDHO" class="w-full h-auto object-cover" loading="lazy" onerror="console.error('School photo failed to load:', this.src); this.style.background='linear-gradient(135deg, #1e3a8a, #7c3aed)';">
+        </div>
+       </div>
+       <div class="relative">
+        <div class="absolute -inset-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl opacity-20 blur-2xl"></div>
+        <div class="relative bg-gradient-to-br from-blue-600 to-purple-700 rounded-3xl p-8 text-white">
+         <h3 class="font-display text-2xl font-bold mb-4">📜 Sejarah Singkat</h3>
+         <p class="text-white/90 leading-relaxed mb-6">MAS AR-RIDHO Lesong Daya didirikan dengan semangat untuk memberikan pendidikan berkualitas yang memadukan kurikulum nasional dengan nilai-nilai keislaman. Berlokasi di Kecamatan Batumarmar, Kabupaten Pamekasan, sekolah ini telah menjadi pilihan utama masyarakat dalam mendidik putra-putri mereka.</p>
+         <p class="text-white/90 leading-relaxed">Selama lebih dari 15 tahun, kami telah meluluskan ribuan alumni yang kini berkontribusi di berbagai bidang, baik di tingkat lokal maupun nasional.</p>
+        </div>
+       </div>
+      </div>
+      <div class="space-y-8">
+       <div class="card-hover bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 border border-blue-100">
+        <div class="flex items-start gap-4">
+         <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg"><span class="text-2xl">💪</span>
+         </div>
+         <div>
+          <h3 class="font-bold text-xl text-slate-800 mb-3">Visi</h3>
+          <p class="text-slate-600 leading-relaxed">Menjadi lembaga pendidikan Islam unggulan yang menghasilkan lulusan berilmu, beriman, berakhlak mulia, dan berdaya saing tinggi di era global.</p>
+         </div>
+        </div>
+       </div>
+       <div class="card-hover bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-8 border border-purple-100">
+        <div class="flex items-start gap-4">
+         <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg"><span class="text-2xl">🎯</span>
+         </div>
+         <div>
+          <h3 class="font-bold text-xl text-slate-800 mb-3">Misi</h3>
+          <ul class="text-slate-600 space-y-2">
+           <li class="flex items-start gap-2"><span class="text-purple-500 mt-1">✓</span> Menyelenggarakan pendidikan berkualitas berbasis Islam</li>
+           <li class="flex items-start gap-2"><span class="text-purple-500 mt-1">✓</span> Mengembangkan potensi akademik dan non-akademik siswa</li>
+           <li class="flex items-start gap-2"><span class="text-purple-500 mt-1">✓</span> Membentuk karakter siswa yang berakhlakul karimah</li>
+           <li class="flex items-start gap-2"><span class="text-purple-500 mt-1">✓</span> Mempersiapkan lulusan yang siap bersaing di perguruan tinggi</li>
+          </ul>
+         </div>
+        </div>
+       </div>
+       <div class="card-hover bg-gradient-to-r from-yellow-50 to-orange-50 rounded-2xl p-8 border border-yellow-100">
+        <div class="flex items-start gap-4">
+         <div class="w-14 h-14 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg"><span class="text-2xl">🏅</span>
+         </div>
+         <div>
+          <h3 class="font-bold text-xl text-slate-800 mb-3">Akreditasi</h3>
+          <div class="text-slate-600">
+           <p class="font-semibold mb-2">Status: <span id="accred-status" class="text-orange-600">B</span></p>
+           <p class="text-sm mb-1">Lembaga: <span id="accred-body" class="font-medium">BAN SM</span></p>
+           <p class="text-sm">Tahun: <span id="accred-year" class="font-medium">2023</span></p>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Principal Welcome Section -->
+   <section id="sambutan" class="py-24 bg-gradient-to-br from-blue-900 via-purple-900 to-blue-900">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="grid lg:grid-cols-5 gap-12 items-center">
+      <div class="lg:col-span-2">
+       <div class="relative">
+        <div class="absolute -inset-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl opacity-30 blur-xl"></div>
+        <div class="relative bg-gradient-to-br from-slate-100 to-slate-200 rounded-3xl p-4 overflow-hidden">
+         <div class="aspect-[3/4] rounded-2xl bg-gradient-to-br from-blue-600 to-purple-700 flex items-center justify-center overflow-hidden"><img src="https://raw.githubusercontent.com/maarridhomedia-design/Foto-kepala-/refs/heads/main/IMG_20260215_201834.jpg" alt="Kepala Sekolah" class="w-full h-full object-cover" loading="lazy" onerror="console.error('Principal photo failed to load:', this.src); this.style.background='linear-gradient(135deg, #1e3a8a, #7c3aed)';">
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="lg:col-span-3 text-white"><span class="inline-block px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-white/90 text-sm font-semibold mb-6"> 💬 Sambutan Kepala Sekolah </span>
+       <h2 class="font-display text-3xl lg:text-4xl font-bold mb-6">Selamat Datang di<br><span class="text-yellow-300">MAS AR-RIDHO Lesong Daya</span></h2>
+       <div class="relative">
+        <div class="absolute -left-4 top-0 text-6xl text-purple-400/30">
+         "
+        </div>
+        <blockquote class="text-white/90 text-lg leading-relaxed space-y-4 pl-8">
+         <p>Assalamu'alaikum Warahmatullahi Wabarakatuh,</p>
+         <p>Puji syukur kita panjatkan kehadirat Allah SWT yang telah memberikan rahmat dan hidayah-Nya kepada kita semua. Selamat datang di website resmi MAS AR-RIDHO Lesong Daya.</p>
+         <p>Kami dengan tulus hati menyambut Anda yang tertarik untuk mengenal lebih dalam tentang sekolah kami. Melalui website ini, kami ingin berbagi informasi lengkap tentang visi, misi, program akademik, dan berbagai prestasi yang telah kami raih.</p>
+         <p>MAS AR-RIDHO berkomitmen untuk memberikan pendidikan terbaik yang memadukan ilmu pengetahuan umum dengan nilai-nilai keislaman yang kuat. Kami percaya bahwa pendidikan bukan hanya sekadar transfer ilmu, tetapi juga pembentukan karakter dan akhlak mulia.</p>
+         <p>Semoga Allah SWT senantiasa membimbing langkah kita dalam mencerdaskan anak bangsa dan mencetak generasi yang bermanfaat bagi agama, bangsa, dan negara.</p>
+         <p class="font-semibold"><span id="principal-greeting">Ach Kuryadi, S.Pd.i</span><br><span class="text-sm text-white/70">Kepala Sekolah MAS AR-RIDHO</span></p>
+         <p>Wassalamu'alaikum Warahmatullahi Wabarakatuh</p>
+        </blockquote>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Achievement Section -->
+   <section id="prestasi" class="py-24 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-16"><span class="inline-block px-4 py-2 bg-yellow-100 text-yellow-700 rounded-full text-sm font-semibold mb-4">Prestasi</span>
+      <h2 class="font-display text-4xl lg:text-5xl font-bold text-slate-800 mb-4">Prestasi <span class="text-gradient">Membanggakan</span></h2>
+      <p class="text-slate-600 text-lg max-w-2xl mx-auto">Berbagai penghargaan yang telah diraih siswa-siswi MAS AR-RIDHO</p>
+     </div>
+     <div class="relative bg-white rounded-3xl p-8 overflow-hidden shadow-2xl max-w-4xl mx-auto">
+      <div id="achievement-slideshow" class="slideshow-container"><!-- Slide 1: Prestasi Matematika -->
+       <div class="slide active">
+        <div class="bg-white rounded-3xl overflow-hidden"><img src="https://raw.githubusercontent.com/maarridhomedia-design/Foto-kepala-/refs/heads/main/Selamat%20%26%20Sukses%20atas%20Prestasi%20Membanggakan!%20%F0%9F%8F%86Keluarga%20Besar%20MA%20AR-RIDHO%20mengucapkan%20selamat%20d.webp" alt="Prestasi Matematika" class="w-full h-96 object-cover" loading="lazy" onerror="console.error('Image failed to load:', this.src); this.style.background='linear-gradient(135deg, #1e3a8a, #6366f1)';">
+        </div>
+       </div><!-- Slide 2: Prestasi Seni Nasional -->
+       <div class="slide">
+        <div class="bg-white rounded-3xl overflow-hidden"><img src="https://raw.githubusercontent.com/maarridhomedia-design/Foto-kepala-/refs/heads/main/ALHAMDULILLAH!%20PRESTASI%20TINGKAT%20NASIONAL!%20%F0%9F%87%AE%F0%9F%87%A9%F0%9F%A5%89Keluarga%20Besar%20MA%20AR-RIDHO%20dengan%20bangga%20menguc.webp" alt="Prestasi Seni Nasional" class="w-full h-96 object-cover" loading="lazy" onerror="console.error('Image failed to load:', this.src); this.style.background='linear-gradient(135deg, #7c3aed, #a855f7)';">
+        </div>
+       </div><!-- Slide 3: Prestasi Pencak Silat -->
+       <div class="slide">
+        <div class="bg-white rounded-3xl overflow-hidden"><img src="https://raw.githubusercontent.com/maarridhomedia-design/Foto-kepala-/refs/heads/main/Alhamdulillah%2C%20Prestasi%20Gemilang%20di%20UIM%20CUP%202025%20Se-Madura!%20%F0%9F%8F%86Perjuangan%20tidak%20pernah%20mengkhian.webp" alt="Prestasi Pencak Silat UIM CUP" class="w-full h-96 object-cover" loading="lazy" onerror="console.error('Image failed to load:', this.src); this.style.background='linear-gradient(135deg, #dc2626, #f87171)';">
+        </div>
+       </div>
+      </div><!-- Slideshow Controls -->
+      <div class="flex justify-center gap-4 mt-8"><button onclick="changeSlide(-1)" class="w-12 h-12 bg-blue-600 rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 transition-all text-white">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg></button> <button onclick="changeSlide(1)" class="w-12 h-12 bg-blue-600 rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 transition-all text-white">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg></button>
+      </div>
+     </div>
+     <div class="text-center mt-12"><a href="#kontak" class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full font-bold text-lg hover:shadow-xl hover:shadow-purple-500/30 transition-all"> 🏆 Lihat Semua Prestasi 
+       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+       </svg></a>
+     </div>
+    </div>
+   </section><!-- Facilities Section -->
+   <section id="fasilitas" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-16"><span class="inline-block px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-semibold mb-4">Fasilitas</span>
+      <h2 class="font-display text-4xl lg:text-5xl font-bold text-slate-800 mb-4">Fasilitas <span class="text-gradient">Lengkap</span></h2>
+     </div>
+     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="card-hover bg-white rounded-3xl overflow-hidden shadow-lg">
+       <div class="h-48 bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center"><span class="text-7xl">🧪</span>
+       </div>
+       <div class="p-6">
+        <h4 class="font-bold text-slate-800 mb-2">Laboratorium IPA</h4>
+        <p class="text-slate-600">Laboratorium lengkap untuk praktikum Fisika, Kimia, dan Biologi dengan peralatan modern.</p>
+       </div>
+      </div>
+      <div class="card-hover bg-white rounded-3xl overflow-hidden shadow-lg">
+       <div class="h-48 bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center"><span class="text-7xl">📚</span>
+       </div>
+       <div class="p-6">
+        <h4 class="font-bold text-slate-800 mb-2">Perpustakaan</h4>
+        <p class="text-slate-600">Koleksi buku lengkap dengan ruang baca nyaman dan sistem digital pencarian.</p>
+       </div>
+      </div>
+      <div class="card-hover bg-white rounded-3xl overflow-hidden shadow-lg">
+       <div class="h-48 bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center"><span class="text-7xl">🕌</span>
+       </div>
+       <div class="p-6">
+        <h4 class="font-bold text-slate-800 mb-2">Masjid</h4>
+        <p class="text-slate-600">Masjid luas dan nyaman untuk sholat berjamaah dan kegiatan keagamaan.</p>
+       </div>
+      </div>
+      <div class="card-hover bg-white rounded-3xl overflow-hidden shadow-lg">
+       <div class="h-48 bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center"><span class="text-7xl">🏛️</span>
+       </div>
+       <div class="p-6">
+        <h4 class="font-bold text-slate-800 mb-2">Aula Serbaguna</h4>
+        <p class="text-slate-600">Aula berkapasitas besar untuk acara sekolah dan kegiatan bersama.</p>
+       </div>
+      </div>
+      <div class="card-hover bg-white rounded-3xl overflow-hidden shadow-lg">
+       <div class="h-48 bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center"><span class="text-7xl">💻</span>
+       </div>
+       <div class="p-6">
+        <h4 class="font-bold text-slate-800 mb-2">Ruang Multimedia</h4>
+        <p class="text-slate-600">Ruang komputer modern dengan akses internet untuk pembelajaran digital.</p>
+       </div>
+      </div>
+      <div class="card-hover bg-white rounded-3xl overflow-hidden shadow-lg">
+       <div class="h-48 bg-gradient-to-br from-green-500 to-lime-600 flex items-center justify-center"><span class="text-7xl">⚽</span>
+       </div>
+       <div class="p-6">
+        <h4 class="font-bold text-slate-800 mb-2">Lapangan Olahraga</h4>
+        <p class="text-slate-600">Lapangan luas untuk berbagai aktivitas olahraga dan upacara.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Contact Section -->
+   <section id="kontak" class="py-24 bg-gradient-to-br from-blue-900 via-purple-900 to-blue-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-16"><span class="inline-block px-4 py-2 bg-white/10 backdrop-blur-sm text-white/90 rounded-full text-sm font-semibold mb-4">Hubungi Kami</span>
+      <h2 class="font-display text-4xl lg:text-5xl font-bold text-white mb-4">Hubungi <span class="text-yellow-300">Kami</span></h2>
+      <p class="text-white/70 text-lg max-w-2xl mx-auto">Jangan ragu untuk menghubungi kami jika ada pertanyaan</p>
+     </div>
+     <div class="grid lg:grid-cols-2 gap-12">
+      <div class="space-y-8">
+       <div class="glass rounded-3xl p-8">
+        <h3 class="font-bold text-xl text-white mb-6">📍 Informasi Kontak</h3>
+        <div class="space-y-6">
+         <div class="flex items-start gap-4">
+          <div class="w-12 h-12 bg-blue-500/30 rounded-xl flex items-center justify-center flex-shrink-0"><span class="text-2xl">🏫</span>
+          </div>
+          <div>
+           <h4 class="font-semibold text-white mb-1">Alamat</h4>
+           <p class="text-white/70">Jln. Raya Tamberu, Dsn. Jurang Butoh, Ds. Lesong Daya, Kec. Batumarmar, Kab. Pamekasan, Jawa Timur</p>
+          </div>
+         </div>
+         <div class="flex items-start gap-4">
+          <div class="w-12 h-12 bg-green-500/30 rounded-xl flex items-center justify-center flex-shrink-0"><span class="text-2xl">📞</span>
+          </div>
+          <div>
+           <h4 class="font-semibold text-white mb-1">Telepon</h4>
+           <p class="text-white/70">+62 877-5060-3060</p>
+          </div>
+         </div>
+         <div class="flex items-start gap-4">
+          <div class="w-12 h-12 bg-purple-500/30 rounded-xl flex items-center justify-center flex-shrink-0"><span class="text-2xl">✉️</span>
+          </div>
+          <div>
+           <h4 class="font-semibold text-white mb-1">Email</h4>
+           <p class="text-white/70">maarridhomedia@gmail.com</p>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="glass rounded-3xl p-8">
+       <h3 class="font-bold text-xl text-white mb-6">📝 Kirim Pesan</h3>
+       <form id="contact-form" class="space-y-6" onsubmit="handleFormSubmit(event)">
+        <div><label for="name" class="block text-white/90 text-sm font-medium mb-2">Nama Lengkap</label> <input type="text" id="name" name="name" required class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all" placeholder="Masukkan nama lengkap">
+        </div>
+        <div><label for="email" class="block text-white/90 text-sm font-medium mb-2">Email</label> <input type="email" id="email" name="email" required class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all" placeholder="contoh@email.com">
+        </div>
+        <div><label for="subject" class="block text-white/90 text-sm font-medium mb-2">Subjek</label> <input type="text" id="subject" name="subject" required class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all" placeholder="Perihal pesan">
+        </div>
+        <div><label for="message" class="block text-white/90 text-sm font-medium mb-2">Pesan</label> <textarea id="message" name="message" rows="4" required class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none" placeholder="Tulis pesan Anda di sini..."></textarea>
+        </div><button type="submit" id="submit-btn" class="w-full px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-bold text-lg hover:from-blue-600 hover:to-purple-600 transition-all shadow-xl hover:shadow-purple-500/30"> Kirim Pesan </button>
+       </form>
+       <div id="form-message" class="hidden mt-4 p-4 rounded-xl text-center"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="bg-slate-900 text-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="flex flex-col items-center gap-8"><!-- Social Media Links -->
+      <div class="flex items-center gap-6 justify-center flex-wrap"><a href="https://www.youtube.com/@masar-ridho" target="_blank" rel="noopener noreferrer" class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700 transition-all shadow-lg hover:shadow-red-500/50 hover:scale-110">
+        <svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+        </svg></a> <a href="https://www.tiktok.com/@ma.arridho1" target="_blank" rel="noopener noreferrer" class="w-12 h-12 bg-black rounded-full flex items-center justify-center hover:bg-slate-800 transition-all shadow-lg hover:shadow-slate-500/50 hover:scale-110 border border-slate-700">
+        <svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.1 1.82 2.9 2.9 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.08A6.9 6.9 0 0 0 5 20.1a6.9 6.9 0 0 0 11.13-1 6.977 6.977 0 0 0 1.05-3.66 11.6 11.6 0 0 0 7.14 2.3v-3.4a8.946 8.946 0 0 1-4.92-1.58z" />
+        </svg></a> <a href="https://www.instagram.com/mas_arridho" target="_blank" rel="noopener noreferrer" class="w-12 h-12 bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400 rounded-full flex items-center justify-center hover:shadow-lg hover:shadow-pink-500/50 hover:scale-110 transition-all shadow-lg">
+        <svg class="w-6 h-6 text-white" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1112.324 0 6.162 6.162 0 01-12.324 0zM12 16a4 4 0 100-8 4 4 0 000 8zm4.965-10.322a1.44 1.44 0 110-2.881 1.44 1.44 0 010 2.881z" />
+        </svg></a> <a href="https://www.facebook.com/MAS-Ar-Ridho" target="_blank" rel="noopener noreferrer" class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/50 hover:scale-110">
+        <svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+        </svg></a>
+      </div>
+      <div class="text-center border-t border-slate-800 pt-8 w-full">
+       <p class="text-slate-500">© 2025 MAS AR-RIDHO Lesong Daya. Hak Cipta Dilindungi.</p>
+       <p class="text-slate-600 text-sm mt-2">Ikuti media sosial kami untuk informasi terbaru</p>
+      </div>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+    const defaultConfig = {
+      school_name: 'MAS AR-RIDHO',
+      slogan: 'Unggul dalam Prestasi, Berkarakter dalam Budaya',
+      principal_name: 'Ach Kuryadi, S.Pd.i',
+      accreditation_status: 'B',
+      accreditation_body: 'BAN SM',
+      accreditation_year: '2023'
+    };
+
+    let config = { ...defaultConfig };
+    let currentSlide = 0;
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    function showSlide(index) {
+      const slides = document.querySelectorAll('.slide');
+      if (index >= slides.length) currentSlide = 0;
+      if (index < 0) currentSlide = slides.length - 1;
+      
+      slides.forEach((slide, i) => {
+        slide.classList.remove('active');
+        if (i === currentSlide) slide.classList.add('active');
+      });
+    }
+
+    function changeSlide(direction) {
+      currentSlide += direction;
+      showSlide(currentSlide);
+    }
+
+    setInterval(() => {
+      currentSlide++;
+      showSlide(currentSlide);
+    }, 5000);
+
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 100) {
+        navbar.classList.add('bg-slate-900/95', 'backdrop-blur-lg', 'shadow-xl');
+        navbar.classList.remove('bg-transparent');
+      } else {
+        navbar.classList.remove('bg-slate-900/95', 'backdrop-blur-lg', 'shadow-xl');
+        navbar.classList.add('bg-transparent');
+      }
+    });
+
+    async function handleFormSubmit(event) {
+      event.preventDefault();
+      
+      const form = event.target;
+      const submitBtn = document.getElementById('submit-btn');
+      const formMessage = document.getElementById('form-message');
+      
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const subject = document.getElementById('subject').value.trim();
+      const message = document.getElementById('message').value.trim();
+      
+      if (!name || !email || !subject || !message) {
+        showFormMessage('Mohon lengkapi semua field!', 'error');
+        return;
+      }
+      
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Mengirim...';
+      
+      try {
+        const result = await window.dataSdk.create({
+          name: name,
+          email: email,
+          subject: subject,
+          message: message,
+          createdAt: new Date().toISOString()
+        });
+        
+        if (result.isOk) {
+          showFormMessage('Pesan berhasil dikirim! Terima kasih telah menghubungi kami.', 'success');
+          form.reset();
+        } else {
+          showFormMessage('Gagal mengirim pesan. Silakan coba lagi.', 'error');
+        }
+      } catch (error) {
+        showFormMessage('Terjadi kesalahan. Silakan coba lagi.', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Kirim Pesan';
+      }
+    }
+
+    function showFormMessage(text, type) {
+      const formMessage = document.getElementById('form-message');
+      formMessage.textContent = text;
+      formMessage.classList.remove('hidden', 'bg-green-500/20', 'text-green-300', 'bg-red-500/20', 'text-red-300');
+      
+      if (type === 'success') {
+        formMessage.classList.add('bg-green-500/20', 'text-green-300');
+      } else {
+        formMessage.classList.add('bg-red-500/20', 'text-red-300');
+      }
+      
+      setTimeout(() => {
+        formMessage.classList.add('hidden');
+      }, 5000);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    async function initializeApp() {
+      if (window.elementSdk) {
+        await window.elementSdk.init({
+          defaultConfig,
+          onConfigChange: async (newConfig) => {
+            config = { ...defaultConfig, ...newConfig };
+            document.getElementById('hero-title').textContent = config.school_name;
+            document.getElementById('hero-slogan').textContent = `"${config.slogan}"`;
+            document.getElementById('principal-greeting').textContent = config.principal_name;
+            document.getElementById('accred-status').textContent = config.accreditation_status;
+            document.getElementById('accred-body').textContent = config.accreditation_body;
+            document.getElementById('accred-year').textContent = config.accreditation_year;
+            document.getElementById('nav-title').textContent = config.school_name;
+          },
+          mapToCapabilities: () => ({
+            recolorables: [],
+            borderables: [],
+            fontEditable: undefined,
+            fontSizeable: undefined
+          }),
+          mapToEditPanelValues: () => new Map([
+            ['school_name', config.school_name],
+            ['slogan', config.slogan],
+            ['principal_name', config.principal_name],
+            ['accreditation_status', config.accreditation_status],
+            ['accreditation_body', config.accreditation_body],
+            ['accreditation_year', config.accreditation_year]
+          ])
+        });
+      }
+      
+      if (window.dataSdk) {
+        await window.dataSdk.init({
+          onDataChanged: (data) => {}
+        });
+      }
+    }
+
+    initializeApp();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9ce629c325716d09',t:'MTc3MTE3Mjc0Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
